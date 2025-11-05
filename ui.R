@@ -1,3 +1,5 @@
+Skript by jacques.robert@gmx.ch
+
 library(shiny)
 library(plotly)
 library(shinyjs)
