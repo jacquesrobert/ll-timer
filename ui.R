@@ -1,4 +1,4 @@
-Skript by jacques.robert@gmx.ch
+# Skript by jacques.robert@gmx.ch
 
 library(shiny)
 library(plotly)
