@@ -53,7 +53,7 @@ ui <- fluidPage(
    ),
    
    # Titel zentriert + grosser Abstand danach
-   div(h2("LL Raumtimer (Demo-Version)"), style = "text-align:center;"),
+   div(h2("LL Raumtimer"), style = "text-align:center;"),
    div(style = "margin-top:100px;"),
    
    # Erste Timerreihe
