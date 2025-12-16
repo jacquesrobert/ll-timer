@@ -1,13 +1,12 @@
 name: ll-timer
 title: ll-timer
-username: jacquesrobert
-account: jacquesrobert
+username: milak
+account: milak
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 15966857
-bundleId: 11133621
+bundleId: 11330103
 url: https://milak.shinyapps.io/ll-timer/
 version: 1
 asMultiple: FALSE
 asStatic: FALSE
-ignoredFiles: 00_old/server.R|00_old/ui.R

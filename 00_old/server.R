@@ -1,5 +1,5 @@
 # Skript by jacques.robert@gmx.ch
-# Stand: 16.12.2025
+# Stand: 15.12.2025
 
 
 library(shiny)
@@ -71,7 +71,14 @@ timerServer <- function(id, label, color_hex, total_sec) {
          left
       })
       
-    
+      # # Button-Beschriftung dynamisch: Start vs. Reset
+      # observe({
+      #    if (isTRUE(finished()) && left_sec() <= 0) {
+      #       updateActionButton(session, "reset", label = "Reset")
+      #    } else {
+      #       updateActionButton(session, "reset", label = "Start")
+      #    }
+      # })
       
       # Button-Beschriftung dynamisch: Start vs. Reset
       observe({
@@ -82,7 +89,24 @@ timerServer <- function(id, label, color_hex, total_sec) {
          }
       })
       
-    
+      # # Klick: Start (normal) oder Reset (im Negativ)
+      # observeEvent(input$reset, {
+      #    if (isTRUE(finished()) && left_sec() <= 0) {
+      #       # Reset: zuruecksetzen auf Anfangszustand
+      #       active(FALSE)
+      #       finished(FALSE)
+      #       startedAt(Sys.time())  # Referenz neu setzen
+      #       runjs(sprintf("document.getElementById('%s').style.backgroundColor = '%s';",
+      #                     session$ns('reset'), bg_color))
+      #    } else {
+      #       # Start (oder Neustart waehrend Lauf)
+      #       startedAt(Sys.time())
+      #       active(TRUE)
+      #       finished(FALSE)
+      #       runjs(sprintf("document.getElementById('%s').style.backgroundColor = '%s';",
+      #                     session$ns('reset'), bg_color))
+      #    }
+      # })
       
       # Klick: Start oder Reset (Reset stoppt und setzt zurueck)
       observeEvent(input$reset, {
@@ -197,11 +221,10 @@ server <- function(input, output, session) {
    col_ozeanien    <- "#B58900" # gelb
    
    # Europa 5 Minuten, alle anderen 15 Minuten
-   timerServer("europa1",      "Europa",     col_europa,      total_sec = 5 )
-   timerServer("europa2",      "Europa",     col_europa,      total_sec = 5 )
-   timerServer("afrika",       "Afrika",       col_afrika,      total_sec = 15 )
-   timerServer("asien",        "Asien",        col_asien,       total_sec = 15 )
-   timerServer("nordamerika",  "Nordamerika",  col_americas,    total_sec = 15 )
-   timerServer("südamerika",   "Südamerika",   col_americas,    total_sec = 15 )
-   timerServer("ozeanien",     "Ozeanien",     col_ozeanien,    total_sec = 15 )
+   timerServer("europa",       "Europa",       col_europa,      total_sec = 5 *60)
+   timerServer("afrika",       "Afrika",       col_afrika,      total_sec = 15 *60)
+   timerServer("asien",        "Asien",        col_asien,       total_sec = 15 *60)
+   timerServer("nordamerika",  "Nordamerika",  col_americas,    total_sec = 15 *60)
+   timerServer("südamerika",   "Südamerika",   col_americas,    total_sec = 15 *60)
+   timerServer("ozeanien",     "Ozeanien",     col_ozeanien,    total_sec = 15 *60)
 }

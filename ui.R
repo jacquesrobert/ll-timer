@@ -1,4 +1,5 @@
 # Skript by jacques.robert@gmx.ch
+# Stand: 16.12.2025
 
 library(shiny)
 library(plotly)
@@ -26,50 +27,94 @@ lighten_color <- function(hex, factor = 0.5) {
    sprintf("#%02X%02X%02X", r, g, b)
 }
 
-timerUI <- function(id, title, color_hex) {
+
+timerUI <- function(id, title, color_hex, size = 220, plot_offset_y = 0) {
    ns <- NS(id)
    light_col <- lighten_color(color_hex, 0.5)
+   
    tagList(
       div(
-         style = "display:flex; flex-direction:column; align-items:center; gap:8px;",
-         plotlyOutput(ns("plot"), height = "220px", width = "220px"),
+         style = paste0(
+            "display:flex; flex-direction:column; align-items:center; gap:8px; width:", size, "px;"
+         ),
+         
+         # Plot (nur dieser wird vertikal verschoben)
+         div(
+            style = paste0("transform: translateY(", plot_offset_y, "px);"),
+            plotlyOutput(ns("plot"),
+                         height = paste0(size, "px"),
+                         width  = paste0(size, "px"))
+         ),
+         
+         # Button bleibt unangetastet
          actionButton(
             ns("reset"), "Start",
             class = "btn",
             style = paste0(
-               "background-color:", light_col, "; color:white; border:none; width:220px; border-radius:12px;"
+               "background-color:", light_col,
+               "; color:white; border:none; width:", size,
+               "px; border-radius:12px;"
             )
          )
       )
    )
 }
 
+
 ui <- fluidPage(
    useShinyjs(),
    tags$head(
       tags$style(HTML("
       .container-fluid { max-width: 1100px; }
+
+      /* Fixe Spalten fuer identische horizontale Ausrichtung in beiden Reihen */
+      .timer-grid-row {
+        display: grid;
+        /* 1. Spalte: 2x Europa (110px) + Gap (12px) = 252px */
+        grid-template-columns: 230px 230px 230px;
+        justify-content: space-between;
+        align-items: flex-end;
+      }
+
+      .timer-europa-wrap {
+        display: flex;
+        gap: 12px;
+      }
     "))
    ),
    
    # Titel zentriert + grosser Abstand danach
-   div(h2("LL Raumtimer"), style = "text-align:center;"),
+   div(h2("LL-Timer"), style = "text-align:center;"),
    div(style = "margin-top:100px;"),
    
-   # Erste Timerreihe
-   fluidRow(
-      column(4, timerUI("europa", "Europa", col_europa)),
-      column(4, timerUI("afrika", "Afrika", col_afrika)),
-      column(4, timerUI("asien", "Asien", col_asien))
+   # Erste Timerreihe (Spaltenlayout: identisch zur 2. Reihe)
+   div(
+      class = "timer-grid-row",
+      
+      # Europa (2 kleine Timer nebeneinander, kleiner als Afrika)
+     
+      div(
+         class = "timer-europa-wrap",
+         timerUI("europa1", "Europa 1", col_europa, size = 110, plot_offset_y = -55),
+         timerUI("europa2", "Europa 2", col_europa, size = 110, plot_offset_y = -55)
+      ),
+      
+
+      # Afrika (Referenzhoehe)
+      timerUI("afrika", "Afrika", col_afrika, size = 220),
+      
+      # Asien
+      timerUI("asien", "Asien", col_asien, size = 220)
    ),
    
    # grosser Abstand zwischen den Reihen
    div(style = "margin-top:50px;"),
    
-   # Zweite Timerreihe
-   fluidRow(
-      column(4, timerUI("nordamerika", "Nordamerika", col_americas)),
-      column(4, timerUI("südamerika", "Südamerika", col_americas)),
-      column(4, timerUI("ozeanien", "Ozeanien", col_ozeanien))
+   # Zweite Timerreihe (gleiche Spalten wie oben: Suedamerika unter Afrika, Ozeanien unter Asien)
+   div(
+      class = "timer-grid-row",
+      timerUI("nordamerika", "Nordamerika", col_americas, size = 220),
+      timerUI("südamerika", "Südamerika", col_americas, size = 220),
+      timerUI("ozeanien", "Ozeanien", col_ozeanien, size = 220)
    )
 )
