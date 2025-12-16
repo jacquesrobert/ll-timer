@@ -197,11 +197,11 @@ server <- function(input, output, session) {
    col_ozeanien    <- "#B58900" # gelb
    
    # Europa 5 Minuten, alle anderen 15 Minuten
-   timerServer("europa1",      "Europa",     col_europa,      total_sec = 5 )
-   timerServer("europa2",      "Europa",     col_europa,      total_sec = 5 )
-   timerServer("afrika",       "Afrika",       col_afrika,      total_sec = 15 )
-   timerServer("asien",        "Asien",        col_asien,       total_sec = 15 )
-   timerServer("nordamerika",  "Nordamerika",  col_americas,    total_sec = 15 )
-   timerServer("südamerika",   "Südamerika",   col_americas,    total_sec = 15 )
-   timerServer("ozeanien",     "Ozeanien",     col_ozeanien,    total_sec = 15 )
+   timerServer("europa1",      "Europa",     col_europa,      total_sec = 5 *60)
+   timerServer("europa2",      "Europa",     col_europa,      total_sec = 5 *60)
+   timerServer("afrika",       "Afrika",       col_afrika,      total_sec = 15 *60 )
+   timerServer("asien",        "Asien",        col_asien,       total_sec = 15 *60)
+   timerServer("nordamerika",  "Nordamerika",  col_americas,    total_sec = 15 *60)
+   timerServer("südamerika",   "Südamerika",   col_americas,    total_sec = 15 *60)
+   timerServer("ozeanien",     "Ozeanien",     col_ozeanien,    total_sec = 15 *60)
 }
